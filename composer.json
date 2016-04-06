@@ -1,0 +1,14 @@
+{
+    "name": "",
+    "description": "",
+    "keywords": [
+        "amqp",
+        "performance"
+    ],
+    "prefer-stable": true,
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.6.0",
+        "php-amqplib/php-amqplib": "2.*"
+    }
+}
