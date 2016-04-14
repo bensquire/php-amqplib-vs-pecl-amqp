@@ -1,5 +1,4 @@
-AMQP Performance Tests
-======================
+#AMQP Performance Tests
 
 V.Simplistic vagrant setup and PHP scripts to test the performance differences between the PHP AMQP extension
 and php-amqplib.
@@ -7,17 +6,22 @@ and php-amqplib.
 In both cases I've attempted to keep the tests as similar and therefore as fair as possible.
 
 
-Requirements:
--------------
+##Requirements:
  - Vagrant
  
-Installation:
--------------
+##Installation:
  - vagrant up
  
-Run Tests:
-----------
+##Run Tests:
  - vagrant ssh
  - cd /vagrant
- - php tests/library.php
- - php tests/extension.php
+ - php tests/one/library.php
+ - php tests/one/extension.php
+ 
+ 
+##Tests:
+### Scenario One:
+  - Exchange and Queue Deleted 
+  - Exchange and Queue Created
+  - 10000 published messages
+  - Queue/Channel closed

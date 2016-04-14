@@ -1,8 +1,6 @@
 <?php
-chdir(dirname(__DIR__));
-define('APP_DIR', realpath(__DIR__));
-include dirname(__DIR__) . '/vendor/autoload.php';
-include dirname(__DIR__) . '/tests/common.php';
+include dirname(dirname(__DIR__)) . '/vendor/autoload.php';
+include dirname(dirname(__DIR__)) . '/tests/common.php';
 
 
 $time = time();
