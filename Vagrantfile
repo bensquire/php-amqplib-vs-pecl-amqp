@@ -10,7 +10,7 @@ Vagrant.configure(2) do |config|
 
     # The hostname the machine should have. Defaults to nil. If nil, Vagrant won't manage the hostname.
     # If set to a string, the hostname will be set on boot.
-    config.vm.hostname = 'stat.futureproofs.net'
+    config.vm.hostname = 'amqp-tests'
 
     # Disable automatic box update checking. If you disable this, then
     # boxes will only be checked for updates when the user runs
@@ -24,7 +24,7 @@ Vagrant.configure(2) do |config|
 
     # Create a private network, which allows host-only access to the machine
     # using a specific IP.
-    config.vm.network :private_network, ip: "192.168.100.50"
+    config.vm.network :private_network, ip: "192.168.100.10"
 
     # Create a public network, which generally matched to bridged network.
     # Bridged networks make the machine appear as another physical device on
@@ -41,8 +41,6 @@ Vagrant.configure(2) do |config|
     # By default this is the insecure private key that ships with Vagrant,
     # since that is what public boxes use. If you make your own custom box with
     # a custom SSH key, this should point to that private key.
-    config.ssh.insert_key = false
-    config.ssh.private_key_path = ['~/.vagrant.d/insecure_private_key', '~/.ssh/id_rsa']
 
     # Provider-specific configuration so you can fine-tune various
     # backing providers for Vagrant. These expose provider-specific options.
@@ -53,7 +51,7 @@ Vagrant.configure(2) do |config|
         vb.gui = false
         vb.customize ["modifyvm", :id, "--cpus", 2]
         vb.customize ["modifyvm", :id, "--memory", "512"]
-        vb.customize ["modifyvm", :id, "--name"  , "stat.futureproofs.net"]
+        vb.customize ["modifyvm", :id, "--name"  , "amqp-tests"]
         vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
         vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
     end

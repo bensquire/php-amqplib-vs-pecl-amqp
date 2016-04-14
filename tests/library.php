@@ -2,32 +2,29 @@
 chdir(dirname(__DIR__));
 define('APP_DIR', realpath(__DIR__));
 include dirname(__DIR__) . '/vendor/autoload.php';
+include dirname(__DIR__) . '/tests/common.php';
 
-function microtime_float()
-{
-    list($usec, $sec) = explode(" ", microtime());
-    return ((float)$usec + (float)$sec);
-}
 
 $time = time();
-$startTime = microtime_float();
+$startTime = microtimeFloat();
 
-$testData = ['test' => 'message'];
-$testDataString = json_encode($testData);
+$connection = new \PhpAmqpLib\Connection\AMQPStreamConnection('localhost', 5672, 'guest', 'guest', '/');
+$channel = $connection->channel();
 
-$iterations = 1000;
-
-
-//Setup Exchange
-
-//Setup Queue/Route
-
-//Create Message
+$channel->queue_delete($queueName);
+$channel->queue_declare($queueName, false, true, false, false);
+$channel->exchange_delete($exchangeName);
+$channel->exchange_declare($exchangeName, 'direct', false, true, false);
+$channel->queue_bind($queueName, $exchangeName);
 
 
 for ($x = 0; $x <= $iterations; $x++) {
-    //Publish to Queue
+    $message = new \PhpAmqpLib\Message\AMQPMessage($testDataString, array('content_type' => 'text/plain', 'delivery_mode' => \PhpAmqpLib\Message\AMQPMessage::DELIVERY_MODE_PERSISTENT));
+    $channel->basic_publish($message, $exchangeName);
 }
 
-$endTime = microtime_float();
-echo $iterations . ' iterations took ' . number_format($endTime - $startTime, 3) . ' seconds' . "\r\n";
+$channel->close();
+$connection->close();
+
+
+echo $iterations . ' iterations took ' . number_format(microtimeFloat() - $startTime, 3) . ' seconds' . "\r\n";

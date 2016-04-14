@@ -2,32 +2,48 @@
 chdir(dirname(__DIR__));
 define('APP_DIR', realpath(__DIR__));
 include dirname(__DIR__) . '/vendor/autoload.php';
+include dirname(__DIR__) . '/tests/common.php';
 
-function microtime_float()
-{
-    list($usec, $sec) = explode(" ", microtime());
-    return ((float)$usec + (float)$sec);
-}
 
 $time = time();
-$startTime = microtime_float();
-
-$testData = ['test' => 'message'];
-$testDataString = json_encode($testData);
-
-$iterations = 1000;
+$startTime = microtimeFloat();
 
 
-//Setup Exchange
+// Create a connection
+$cnn = new \AMQPConnection();
+$cnn->setHost('localhost');
+$cnn->setLogin('guest');
+$cnn->setPassword('guest');
+$cnn->setVhost('/');
+$cnn->connect();
 
-//Setup Queue/Route
+// Create a channel
+$ch = new \AMQPChannel($cnn);
 
-//Create Message
+// Declare a new exchange
+$ex = new \AMQPExchange($ch);
+$ex->delete($exchangeName);
+$ex->setName($exchangeName);
+$ex->setType("direct");
+$ex->setFlags(AMQP_DURABLE);
+$ex->declareExchange();
+
+// Create a new queue
+$q = new \AMQPQueue($ch);
+$q->setFlags(AMQP_DURABLE);
+$q->setName($queueName);
+$q->delete();
+$q->declareQueue();
+
+// Bind it on the exchange to routing.key
+$q->bind('router');
 
 
 for ($x = 0; $x <= $iterations; $x++) {
-    //Publish to Queue
+    $ex->publish($testDataString, null, AMQP_DURABLE);
 }
 
-$endTime = microtime_float();
-echo $iterations . ' iterations took ' . number_format($endTime - $startTime, 3) . ' seconds' . "\r\n";
+$cnn->disconnect();
+
+
+echo $iterations . ' iterations took ' . number_format(microtimeFloat() - $startTime, 3) . ' seconds' . "\r\n";
