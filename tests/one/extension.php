@@ -28,9 +28,9 @@ $ex->declareExchange();
 
 // Create a new queue
 $q = new \AMQPQueue($ch);
-$q->setFlags(AMQP_DURABLE);
 $q->setName($queueName);
 $q->delete();
+$q->setFlags(AMQP_DURABLE);
 $q->declareQueue();
 
 // Bind it on the exchange to routing.key
