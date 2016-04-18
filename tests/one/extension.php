@@ -5,14 +5,15 @@ include dirname(dirname(__DIR__)) . '/tests/common.php';
 
 $time = time();
 $startTime = microtimeFloat();
-
+$iterations = 10000;
 
 // Create a connection
 $cnn = new \AMQPConnection();
-$cnn->setHost('localhost');
-$cnn->setLogin('guest');
-$cnn->setPassword('guest');
-$cnn->setVhost('/');
+$cnn->setHost($connection['host']);
+$cnn->setPort($connection['port']);
+$cnn->setLogin($connection['username']);
+$cnn->setPassword($connection['password']);
+$cnn->setVhost($connection['vhost']);
 $cnn->connect();
 
 // Create a channel

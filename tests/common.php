@@ -6,9 +6,15 @@ function microtimeFloat()
     return ((float)$usec + (float)$sec);
 }
 
+$connection = [
+    'host' => 'localhost',
+    'port' => 5672,
+    'username' => 'guest',
+    'password' => 'guest',
+    'vhost' => '/'
+];
 
 $testData = ['test' => 'message'];
 $testDataString = json_encode($testData);
-$iterations = 10000;
 $exchangeName = 'router';
 $queueName = 'msgs';
